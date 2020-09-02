@@ -8,7 +8,7 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-import { files as api } from '@/api'
+// import { files as api } from '@/api'
 
 export default {
   name: 'unzip-button',
@@ -17,23 +17,6 @@ export default {
     ...mapGetters(['isListing', 'selectedCount'])
   },
   methods: {
-    unzip: function () {
-
-      if (!this.isListing) {
-
-       api.unzip(null, this.$route.path)
-        return
-      }
-
-      if (this.selectedCount === 1 && !this.req.items[this.selected[0]].isDir) {
-
-
-        api.unzip(null, this.req.items[this.selected[0]].url)
-        return
-      }
-
-     // this.$store.commit('showHover', 'download')
-    }
   }
 }
 </script>
