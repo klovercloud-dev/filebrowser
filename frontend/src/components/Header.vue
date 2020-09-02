@@ -25,6 +25,8 @@
           <copy-button v-show="showCopyButton"></copy-button>
           <move-button v-show="showMoveButton"></move-button>
           <delete-button v-show="showDeleteButton"></delete-button>
+
+
         </div>
 
         <!-- This buttons are shown on a dropdown on mobile phones -->
@@ -85,7 +87,7 @@ export default {
     UploadButton,
     SwitchButton,
     MoveButton,
-    ShellButton
+    ShellButton,
   },
   data: function () {
     return {
