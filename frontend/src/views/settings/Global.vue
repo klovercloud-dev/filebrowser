@@ -18,6 +18,7 @@
         <p class="small">{{ $t('settings.executeOnShellDescription') }}</p>
         <input class="input input--block" type="text" placeholder="bash -c, cmd /c, ..." v-model="settings.shell" />
 
+        <!--
         <h3>{{ $t('settings.branding') }}</h3>
 
         <i18n path="settings.brandingHelp" tag="p" class="small">
@@ -43,6 +44,7 @@
           <label for="branding-files">{{ $t('settings.brandingDirectoryPath') }}</label>
           <input class="input input--block" type="text" v-model="settings.branding.files" id="branding-files" />
         </p>
+        --->
 
       </div>
 
@@ -103,12 +105,10 @@ import { mapState } from 'vuex'
 import { settings as api } from '@/api'
 import UserForm from '@/components/settings/UserForm'
 import Rules from '@/components/settings/Rules'
-import Themes from '@/components/settings/Themes'
 
 export default {
   name: 'settings',
   components: {
-    Themes,
     UserForm,
     Rules
   },

@@ -89,7 +89,7 @@ export default {
       value: fileContent,
       showPrintMargin: false,
       readOnly: this.req.type === 'textImmutable',
-      theme: 'ace/theme/chrome',
+      theme: 'ace/theme/twilight',
       mode: modelist.getModeForPath(this.req.name).mode,
       wrap: true
     })

@@ -1,3 +1,4 @@
 testdata/
 .github/
 **.git
+frontend/node_modules
