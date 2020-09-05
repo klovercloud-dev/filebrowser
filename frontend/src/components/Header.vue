@@ -85,7 +85,7 @@ export default {
     UploadButton,
     SwitchButton,
     MoveButton,
-    ShellButton
+    ShellButton,
   },
   data: function () {
     return {

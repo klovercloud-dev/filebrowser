@@ -82,7 +82,7 @@ export default {
     window.removeEventListener('keydown', this.keyEvent)
     this.editor.destroy();
   },
-  mounted: function () {    
+  mounted: function () {
     const fileContent = this.req.content || '';
 
     this.editor = ace.edit('editor', {
