@@ -101,8 +101,12 @@ var rawHandlerForUnzipping = withUser(func(w http.ResponseWriter, r *http.Reques
 			return http.StatusInternalServerError, err
 		}
 		defer fd.Close()
-		path, _ := filepath.Abs(file.Name)
-		err = unzip(path, strings.ReplaceAll(path, "/"+file.Name, ""))
+		server, err := d.store.Settings.GetServer()
+		if err != nil {
+			return errToStatus(err), err
+		}
+
+		err = unzip(server.Root+file.Path, strings.ReplaceAll(server.Root+file.Path, "/"+file.Name, ""))
 		if err != nil {
 			return errToStatus(err), err
 		}
