@@ -20,7 +20,7 @@
         <!-- Menu that shows on listing AND mobile when there are files selected -->
         <div id="file-selection" v-if="isMobile && isListing">
           <span v-if="selectedCount > 0">{{ selectedCount }} selected</span>
-          <share-button v-show="showShareButton"></share-button>
+          <!--<share-button v-show="showShareButton"></share-button>-->
           <rename-button v-show="showRenameButton"></rename-button>
           <copy-button v-show="showCopyButton"></copy-button>
           <move-button v-show="showMoveButton"></move-button>
@@ -30,7 +30,7 @@
         <!-- This buttons are shown on a dropdown on mobile phones -->
         <div id="dropdown" :class="{ active: showMore }">
           <div v-if="!isListing || !isMobile">
-            <share-button v-show="showShareButton"></share-button>
+            <!--<share-button v-show="showShareButton"></share-button>-->
             <rename-button v-show="showRenameButton"></rename-button>
             <copy-button v-show="showCopyButton"></copy-button>
             <move-button v-show="showMoveButton"></move-button>
