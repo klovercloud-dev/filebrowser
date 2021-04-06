@@ -7,6 +7,7 @@ const recaptchaKey = window.FileBrowser.ReCaptchaKey
 const signup = window.FileBrowser.Signup
 const version = window.FileBrowser.Version
 const logoURL = `${staticURL}/img/logo.svg`
+const unzipIconURL = `${staticURL}/img/Unzip.svg`
 const noAuth = window.FileBrowser.NoAuth
 const authMethod = window.FileBrowser.AuthMethod
 const loginPage = window.FileBrowser.LoginPage
@@ -19,6 +20,7 @@ export {
   disableExternal,
   baseURL,
   logoURL,
+  unzipIconURL,
   recaptcha,
   recaptchaKey,
   signup,

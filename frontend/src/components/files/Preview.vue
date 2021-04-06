@@ -55,9 +55,11 @@
         </video>
         <object v-else-if="req.extension == '.pdf'" class="pdf" :data="raw"></object>
         <a v-else-if="req.type == 'blob'" :href="download">
-          <button class="btn"><i class="fa fa-download"></i> Download</button>
+          <button class="btn" ><i class="material-icons">file_download</i> Download </button>
         </a>
-        <button class="btn" @click="unzipFIle" v-show="user.perm.modify" :aria-label="$t('buttons.unzip')" :title="$t('buttons.unzip')" id="unzip-button"><i class="fa fa-folder-open-o"></i> Extract</button>
+        <span  v-if="req.extension === '.zip'"> ||
+        <button  class="btn" @click="unzipFIle" v-show="user.perm.modify" :aria-label="$t('buttons.unzip')" :title="$t('buttons.unzip')" id="unzip-button"><img class="material-icons" :src="unzipIconURL" style="height: 24px" alt=""> Extract</button>
+        </span>
       </div>
     </template>
 
@@ -68,7 +70,7 @@
 <script>
 import { mapState } from 'vuex'
 import url from '@/utils/url'
-import { baseURL, resizePreview } from '@/utils/constants'
+import {baseURL, resizePreview, unzipIconURL} from '@/utils/constants'
 import { files as api } from '@/api'
 import PreviewSizeButton from '@/components/buttons/PreviewSize'
 import InfoButton from '@/components/buttons/Info'
@@ -95,7 +97,7 @@ export default {
     RenameButton,
     DownloadButton,
     ExtendedImage,
-    UnzipButton
+
   },
   data: function () {
     return {
@@ -108,6 +110,7 @@ export default {
     }
   },
   computed: {
+    unzipIconURL: () => unzipIconURL,
     ...mapState(['req', 'user', 'oldReq', 'jwt', 'loading']),
     hasPrevious () {
       return (this.previousLink !== '')
@@ -137,6 +140,7 @@ export default {
       return resizePreview
     }
   },
+
   watch: {
     $route: function () {
       this.updatePreview()
@@ -154,16 +158,13 @@ export default {
   },
   methods: {
     async unzipFIle () {
-      const button = 'unzip'
-      buttons.loading('unzip')
       try {
         await api.extract(`${baseURL}`+`${url.encodePath(this.req.path)}?auth=${this.jwt}`)
-        buttons.success(button)
         this.$showSuccess("Operation Successful")
       } catch (e) {
-        buttons.done(button)
         this.$showError(e)
       }
+this.back()
     },
     back () {
       this.$store.commit('setPreviewMode', false)
@@ -247,9 +248,18 @@ export default {
       border: none;
       color: white;
       padding: 12px 30px;
+      text-align: center;
       cursor: pointer;
       font-size: 20px;
     }
+    #left, #middle, #right {
+      height: auto;
+    }
+    .material-icons {
+      vertical-align: middle;
+      margin-top: -4px !important;
+    }
+
 
     /* Darker background on mouse-over */
     .btn:hover {

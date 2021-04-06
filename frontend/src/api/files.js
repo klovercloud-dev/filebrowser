@@ -41,6 +41,21 @@ export async function extract (url) {
   }
 }
 
+export async function extract (url) {
+  url = removePrefix(url)
+  const res = await fetchURL(`/api/unzip${url}`, {})
+  if (res.status === 200) {
+    return "Operation Successful"
+  } else {
+    if(res.status==403) {
+      throw new Error("Permission Denied!!")
+    } else {
+      throw new Error(res.status)
+    }
+
+  }
+}
+
 async function resourceAction (url, method, content) {
   url = removePrefix(url)
 

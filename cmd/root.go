@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/afero"
@@ -163,7 +164,13 @@ user created with the credentials from options "username" and "password".`,
 		defer listener.Close()
 
 		log.Println("Listening on", listener.Addr().String())
-		if err := http.Serve(listener, handler); err != nil {
+		srv := &http.Server{
+			ReadTimeout:  30 * time.Second,
+			WriteTimeout: 1800 * time.Second,
+			Handler:      handler,
+		}
+
+		if err := srv.Serve(listener); err != nil {
 			log.Fatal(err)
 		}
 	}, pythonConfig{allowNoDB: true}),

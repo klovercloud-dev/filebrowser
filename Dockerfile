@@ -28,5 +28,5 @@ VOLUME /db
 VOLUME /srv-fb
 COPY .docker.json /app/.filebrowser.json
 COPY --from=builder /app/bin /app
-EXPOSE 8080
+EXPOSE 8000
 CMD ["./filebrowser"]
