@@ -18,6 +18,7 @@
         <rename-button :disabled="loading" v-if="user.perm.rename"></rename-button>
         <delete-button :disabled="loading" v-if="user.perm.delete"></delete-button>
         <download-button :disabled="loading" v-if="user.perm.download"></download-button>
+        <unzip-button disabled="loading" v-if="user.perm.unzip"></unzip-button>
         <info-button :disabled="loading"></info-button>
       </div>
     </div>
@@ -54,8 +55,11 @@
         </video>
         <object v-else-if="req.extension == '.pdf'" class="pdf" :data="raw"></object>
         <a v-else-if="req.type == 'blob'" :href="download">
-          <h2 class="message">{{ $t('buttons.download') }} <i class="material-icons">file_download</i></h2>
+          <button class="btn" ><i class="material-icons">file_download</i> Download </button>
         </a>
+        <span  v-if="req.extension === '.zip'"> ||
+        <button  class="btn" @click="unzipFIle" v-show="user.perm.modify" :aria-label="$t('buttons.unzip')" :title="$t('buttons.unzip')" id="unzip-button"><img class="material-icons" :src="unzipIconURL" style="height: 24px" alt=""> Extract</button>
+        </span>
       </div>
     </template>
 
@@ -66,7 +70,7 @@
 <script>
 import { mapState } from 'vuex'
 import url from '@/utils/url'
-import { baseURL, resizePreview } from '@/utils/constants'
+import {baseURL, resizePreview, unzipIconURL} from '@/utils/constants'
 import { files as api } from '@/api'
 import PreviewSizeButton from '@/components/buttons/PreviewSize'
 import InfoButton from '@/components/buttons/Info'
@@ -74,7 +78,6 @@ import DeleteButton from '@/components/buttons/Delete'
 import RenameButton from '@/components/buttons/Rename'
 import DownloadButton from '@/components/buttons/Download'
 import ExtendedImage from './ExtendedImage'
-
 const mediaTypes = [
   "image",
   "video",
@@ -90,7 +93,8 @@ export default {
     DeleteButton,
     RenameButton,
     DownloadButton,
-    ExtendedImage
+    ExtendedImage,
+
   },
   data: function () {
     return {
@@ -103,6 +107,7 @@ export default {
     }
   },
   computed: {
+    unzipIconURL: () => unzipIconURL,
     ...mapState(['req', 'user', 'oldReq', 'jwt', 'loading']),
     hasPrevious () {
       return (this.previousLink !== '')
@@ -112,6 +117,9 @@ export default {
     },
     download () {
       return `${baseURL}/api/raw${url.encodePath(this.req.path)}?auth=${this.jwt}`
+    },
+    unzip(){
+       return  `${baseURL}/api/unzip${url.encodePath(this.req.path)}?auth=${this.jwt}`
     },
     previewUrl () {
       if (this.req.type === 'image' && !this.fullSize) {
@@ -129,6 +137,7 @@ export default {
       return resizePreview
     }
   },
+
   watch: {
     $route: function () {
       this.updatePreview()
@@ -145,6 +154,15 @@ export default {
     this.$store.commit('setPreviewMode', false)
   },
   methods: {
+    async unzipFIle () {
+      try {
+        await api.extract(`${baseURL}`+`${url.encodePath(this.req.path)}?auth=${this.jwt}`)
+        this.$showSuccess("Operation Successful")
+      } catch (e) {
+        this.$showError(e)
+      }
+this.back()
+    },
     back () {
       this.$store.commit('setPreviewMode', false)
       let uri = url.removeLastDir(this.$route.path) + '/'
@@ -220,3 +238,28 @@ export default {
   }
 }
 </script>
+
+<style>
+    .btn {
+      background-color: DodgerBlue;
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    #left, #middle, #right {
+      height: auto;
+    }
+    .material-icons {
+      vertical-align: middle;
+      margin-top: -4px !important;
+    }
+
+
+    /* Darker background on mouse-over */
+    .btn:hover {
+      background-color: RoyalBlue;
+    }
+</style>
